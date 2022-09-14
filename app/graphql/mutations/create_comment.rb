@@ -1,16 +1,13 @@
 class Mutations::CreateComment < Mutations::BaseMutation
-  # argument :commenter, String, required: true
   argument :body, String, required: true
   argument :post_id, Integer, required: true
-  # argument :user_id, Integer, required: true
 
   field :comment, Types::CommentType, null: false
   field :errors, [String], null: false
   
 
   def resolve(body:,post_id:)
-    # binding.pry
-    if context[:current_user]!= nil
+    unless context[:current_user].nil?
       current_user = context[:current_user]
       comment = current_user.comments.build(commenter: current_user.name ,body: body,post_id: post_id)
       if comment.save

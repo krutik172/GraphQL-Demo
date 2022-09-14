@@ -1,25 +1,25 @@
 class Mutations::CreateUser < Mutations::BaseMutation
-    argument :name, String, required: true
-    argument :email, String, required: true
-    argument :password, String, required: true
+  argument :name, String, required: true
+  argument :email, String, required: true
+  argument :password, String, required: true
 
-    field :user, Types::UserType, null: false
-    field :errors, [String], null: false
-    
+  field :user, Types::UserType, null: false
+  field :errors, [String], null: false
+  
 
-    def resolve(name:,email:,password:)
-      user = User.new(name: name,email: email)
-      if user.save
-        user.token = user.to_sgid(expires_in: 12.hours, for: 'graphql')
-        {
-          user: user,
-          errors: []
-        }
-      else
-        {
-          user: nil,
-          errors: user.errors.full_messages
-        }
-      end
+  def resolve(name:,email:,password:)
+    user = User.new(name: name,email: email)
+    if user.save
+      user.token = user.to_sgid(expires_in: 12.hours, for: 'graphql')
+      {
+        user: user,
+        errors: []
+      }
+    else
+      {
+        user: nil,
+        errors: user.errors.full_messages
+      }
     end
+  end
 end

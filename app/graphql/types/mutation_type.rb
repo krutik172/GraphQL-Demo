@@ -4,6 +4,7 @@ module Types
       argument :email, String, required: true
       argument :password, String, required: true
     end
+
     def login(email:, password:)
       user = User.find_by(email: email)
       if user&.authenticate(password)
@@ -14,12 +15,12 @@ module Types
       end
     end
 
-
     field :register, Types::UserType, null: false do
       argument :name, String, required: true
       argument :email, String, required: true
       argument :password, String, required: true
     end
+    
     def register(**kwargs)
       user = User.new(kwargs)
       if user.save
